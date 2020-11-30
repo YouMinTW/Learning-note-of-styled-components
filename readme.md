@@ -133,3 +133,60 @@ render(
   </div>
 );
 ```
+
+
+## 進階
+
+## 5. 參考其他元件，在元件樣式中使用 css 選擇器，選取其子元件
+
+### 註解：**&** 代表 當下的這個元件，於是我們可以使用 `&:hover`,`& > ${SomeComponent}`
+
+```tsx
+const StyledTitle = styled.h2`
+  font-weight: 800;
+  font-size: 20px;
+`;
+const StyledSection = styled.div`
+  display: flex;
+  align-items: center;
+  & > ${StyledTitle} {
+    margin-right: 20px;
+    padding: 50px;
+  }
+`;
+render(
+  <StyledSection>
+    <StyledTitle>You're the best!</StyledTitle>
+  </StyledSection>
+);
+```
+
+## 6. 參考其他元件，在元件樣式偵測上面，父元件的狀態
+
+Icon 包在 Button 底下，有時我們會希望當 Button 被 hover 到時，Icon 的樣式也能一起動態改變樣式
+[React. 7 tricks to work with Styled Components](https://medium.com/javascript-in-plain-english/react-7-tricks-to-work-with-styled-components-20eb155934b1)
+[Official Doc [Referring to other components]](https://styled-components.com/docs/advanced#referring-to-other-components)
+
+```tsx
+const Button = styled.button<{ primary?: boolean }>`
+  background: ${props => (props.primary ? 'pink' : 'blue')};
+  color: ${props => (props.primary ? 'white' : 'green')};
+  &:hover {
+    background: gray;
+    color: black;
+  }
+`;
+const Icon = styled.i`
+  color: white;
+  background-color: orange;
+  font-size: 1.5 rem;
+  ${Button}:hover & {
+    color: black;
+  }
+`;
+render(
+  <Button>
+    Click me<Icon>icon </Icon>
+  </Button>
+);
+```
